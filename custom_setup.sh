@@ -17,6 +17,7 @@ mkdir -p "${MODELS}/diffusion_models"
 mkdir -p "${MODELS}/text_encoders"
 mkdir -p "${MODELS}/vae"
 mkdir -p "${MODELS}/loras"
+mkdir -p "${MODELS}/latent_upscale_models"
 
 download() {
     local url="$1"
@@ -62,7 +63,7 @@ download \
 # --- loras ---
 download \
     "https://huggingface.co/Lightricks/LTX-2/resolve/main/ltx-2-spatial-upscaler-x2-1.0.safetensors" \
-    "${MODELS}/upscale_models" \
+    "${MODELS}/latent_upscale_models" \
     "ltx-2-spatial-upscaler-x2-1.0.safetensors" &
 
 download \
