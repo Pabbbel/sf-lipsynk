@@ -17,7 +17,6 @@ mkdir -p "${MODELS}/diffusion_models"
 mkdir -p "${MODELS}/text_encoders"
 mkdir -p "${MODELS}/vae"
 mkdir -p "${MODELS}/loras"
-mkdir -p "${MODELS}/mel_band_roformer"
 
 download() {
     local url="$1"
@@ -40,7 +39,7 @@ download() {
 # --- diffusion_models ---
 download \
     "https://huggingface.co/Lightricks/LTX-2/resolve/main/ltx-2-19b-dev.safetensors" \
-    "${MODELS}/diffusion_models" \
+    "${MODELS}/checkpoints" \
     "ltx-2-19b-dev.safetensors" &
 
 # --- text_encoders ---
@@ -74,7 +73,7 @@ download \
 # --- mel_band_roformer ---
 download \
     "https://huggingface.co/Kijai/MelBandRoFormer_comfy/resolve/main/MelBandRoformer_fp32.safetensors" \
-    "${MODELS}/checkpoints" \
+    "${MODELS}/diffusion_models" \
     "MelBandRoformer_fp32.safetensors" &
 
 echo "Ожидание завершения всех загрузок..."
