@@ -62,7 +62,7 @@ download \
 # --- loras ---
 download \
     "https://huggingface.co/Lightricks/LTX-2/resolve/main/ltx-2-spatial-upscaler-x2-1.0.safetensors" \
-    "${MODELS}/loras" \
+    "${MODELS}/upscale_models" \
     "ltx-2-spatial-upscaler-x2-1.0.safetensors" &
 
 download \
