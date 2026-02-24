@@ -39,68 +39,93 @@ download() {
 
 # --- diffusion_models ---
 download \
-    "https://huggingface.co/Lightricks/LTX-2/resolve/main/ltx-2-19b-dev.safetensors" \
+    "https://huggingface.co/Kijai/WanVideo_comfy_fp8_scaled/resolve/main/S2V/Wan2_2-S2V-14B_fp8_e4m3fn_scaled_KJ.safetensors" \
     "${MODELS}/checkpoints" \
-    "ltx-2-19b-dev.safetensors" &
-
-# --- text_encoders ---
-download \
-    "https://huggingface.co/Comfy-Org/ltx-2/resolve/main/split_files/text_encoders/gemma_3_12B_it.safetensors" \
-    "${MODELS}/text_encoders" \
-    "gemma_3_12B_it.safetensors" &
-
-# --- vae ---
-download \
-    "https://huggingface.co/Kijai/LTXV2_comfy/resolve/main/VAE/LTX2_audio_vae_bf16.safetensors" \
-    "${MODELS}/vae" \
-    "LTX2_audio_vae_bf16.safetensors" &
-
-download \
-    "https://huggingface.co/Kijai/LTXV2_comfy/resolve/main/VAE/LTX2_video_vae_bf16.safetensors" \
-    "${MODELS}/vae" \
-    "LTX2_video_vae_bf16.safetensors" &
-
-download \
-    "https://huggingface.co/Kijai/LTXV2_comfy/resolve/main/VAE/LTX2_audio_vae_bf16.safetensors?download=true" \
-    "${MODELS}/vae" \
-    "LTX2_audio_vae_bf16.safetensors" &
-
-download \
-    "https://huggingface.co/Kijai/LTXV2_comfy/resolve/main/VAE/LTX2_video_vae_bf16.safetensors?download=true" \
-    "${MODELS}/vae" \
-    "LTX2_video_vae_bf16.safetensors" &
+    "Wan2_2-S2V-14B_fp8_e4m3fn_scaled_KJ.safetensors" &
 
 # --- loras ---
 download \
-    "https://huggingface.co/Lightricks/LTX-2/resolve/main/ltx-2-spatial-upscaler-x2-1.0.safetensors" \
-    "${MODELS}/latent_upscale_models" \
-    "ltx-2-spatial-upscaler-x2-1.0.safetensors" &
-
-download \
-    "https://huggingface.co/Lightricks/LTX-2-19b-LoRA-Camera-Control-Static/resolve/main/ltx-2-19b-lora-camera-control-static.safetensors" \
+    "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/loras/wan2.2_animate_14B_relight_lora_bf16.safetensors" \
     "${MODELS}/loras" \
-    "ltx-2-19b-lora-camera-control-static.safetensors" &
+    "wan2.2_animate_14B_relight_lora_bf16.safetensors" &
 
 download \
-    "https://huggingface.co/MachineDelusions/LTX-2_Image2Video_Adapter_LoRa/resolve/main/LTX-2-Image2Vid-Adapter.safetensors?download=true" \
+    "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/loras/wan2.2_i2v_lightx2v_4steps_lora_v1_low_noise.safetensors" \
     "${MODELS}/loras" \
-    "LTX-2-Image2Vid-Adapter.safetensors" &
+    "wan2.2_i2v_lightx2v_4steps_lora_v1_low_noise.safetensors" &
 
 download \
-    "https://huggingface.co/Kijai/LTXV2_comfy/resolve/main/loras/ltx-2-19b-distilled-lora_resized_dynamic_fro09_avg_rank_175_fp8.safetensors" \
+    "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/loras/wan2.2_t2v_lightx2v_4steps_lora_v1.1_low_noise.safetensors" \
     "${MODELS}/loras" \
-    "ltx-2-19b-distilled-lora_resized_dynamic_fro09_avg_rank_175_fp8.safetensors" &
+    "wan2.2_t2v_lightx2v_4steps_lora_v1.1_low_noise.safetensors" &
 
 download \
-    "https://huggingface.co/Kijai/LTXV2_comfy/resolve/main/text_encoders/ltx-2-19b-embeddings_connector_dev_bf16.safetensors" \
-    "${MODELS}/clip" \
-    "ltx-2-19b-embeddings_connector_dev_bf16.safetensors" &
+    "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/loras/wan2.2_i2v_lightx2v_4steps_lora_v1_high_noise.safetensors" \
+    "${MODELS}/loras" \
+    "wan2.2_i2v_lightx2v_4steps_lora_v1_high_noise.safetensors" &
 
-# --- mel_band_roformer ---
 download \
-    "https://huggingface.co/Kijai/MelBandRoFormer_comfy/resolve/main/MelBandRoformer_fp32.safetensors" \
-    "${MODELS}/diffusion_models" \
-    "MelBandRoformer_fp32.safetensors" &
+    "https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Lightx2v/lightx2v_I2V_14B_480p_cfg_step_distill_rank256_bf16.safetensors" \
+    "${MODELS}/loras" \
+    "lightx2v_I2V_14B_480p_cfg_step_distill_rank256_bf16.safetensors" &
+
+download \
+    "https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Pusa/Wan21_PusaV1_LoRA_14B_rank512_bf16.safetensors" \
+    "${MODELS}/loras" \
+    "Wan21_PusaV1_LoRA_14B_rank512_bf16.safetensors" &
+
+download \
+    "https://huggingface.co/alibaba-pai/Wan2.2-Fun-Reward-LoRAs/resolve/main/Wan2.2-Fun-A14B-InP-low-noise-HPS2.1.safetensors" \
+    "${MODELS}/loras" \
+    "Wan2.2-Fun-A14B-InP-low-noise-HPS2.1.safetensors" &
+
+# --- text_encoders ---
+download \
+    "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors" \
+    "${MODELS}/text_encoders" \
+    "umt5_xxl_fp8_e4m3fn_scaled.safetensors" &
+
+# --- vae ---
+download \
+    "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/vae/wan_2.1_vae.safetensors" \
+    "${MODELS}/vae" \
+    "wan_2.1_vae.safetensors" &
+
+# --- clip_vision ---
+download \
+    "https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/clip_vision/clip_vision_h.safetensors" \
+    "${MODELS}/clip_vision" \
+    "clip_vision_h.safetensors" &
+    
+# --- detection ---
+download \
+"https://huggingface.co/Wan-AI/Wan2.2-Animate-14B/resolve/main/process_checkpoint/det/yolov10m.onnx" \
+"${MODELS}/detection" \
+"yolov10m.onnx" &
+
+download \
+"https://huggingface.co/Kijai/vitpose_comfy/resolve/main/onnx/vitpose_h_wholebody_model.onnx" \
+"${MODELS}/detection" \
+"vitpose_h_wholebody_model.onnx" &
+
+download \
+"https://huggingface.co/Kijai/vitpose_comfy/resolve/main/onnx/vitpose_h_wholebody_data.bin" \
+"${MODELS}/detection" \
+"vitpose_h_wholebody_data.bin" &
+
+# --- RIFE models (в папку кастомной ноды) ---
+RIFE_DIR="/workspace/ComfyUI/custom_nodes/ComfyUI-Frame-Interpolation/ckpts/rife"
+mkdir -p "${RIFE_DIR}"
+
+download \
+    "https://huggingface.co/hfmaster/models-moved/resolve/cab6dcee2fbb05e190dbb8f536fbdaa489031a14/rife/rife49.pth" \
+    "${RIFE_DIR}" \
+    "rife49.pth" &
+
+download \
+    "https://huggingface.co/jasonot/mycomfyui/resolve/main/rife47.pth" \
+    "${RIFE_DIR}" \
+    "rife47.pth" &
 
 echo "Ожидание завершения всех загрузок..."
 wait
