@@ -60,6 +60,16 @@ download \
     "${MODELS}/vae" \
     "LTX2_video_vae_bf16.safetensors" &
 
+download \
+    "https://huggingface.co/Kijai/LTXV2_comfy/resolve/main/VAE/LTX2_audio_vae_bf16.safetensors?download=true" \
+    "${MODELS}/vae" \
+    "LTX2_audio_vae_bf16.safetensors" &
+
+download \
+    "https://huggingface.co/Kijai/LTXV2_comfy/resolve/main/VAE/LTX2_video_vae_bf16.safetensors?download=true" \
+    "${MODELS}/vae" \
+    "LTX2_video_vae_bf16.safetensors" &
+
 # --- loras ---
 download \
     "https://huggingface.co/Lightricks/LTX-2/resolve/main/ltx-2-spatial-upscaler-x2-1.0.safetensors" \
@@ -70,6 +80,21 @@ download \
     "https://huggingface.co/Lightricks/LTX-2-19b-LoRA-Camera-Control-Static/resolve/main/ltx-2-19b-lora-camera-control-static.safetensors" \
     "${MODELS}/loras" \
     "ltx-2-19b-lora-camera-control-static.safetensors" &
+
+download \
+    "https://huggingface.co/MachineDelusions/LTX-2_Image2Video_Adapter_LoRa/resolve/main/LTX-2-Image2Vid-Adapter.safetensors?download=true" \
+    "${MODELS}/loras" \
+    "LTX-2-Image2Vid-Adapter.safetensors" &
+
+download \
+    "https://huggingface.co/Kijai/LTXV2_comfy/resolve/main/loras/ltx-2-19b-distilled-lora_resized_dynamic_fro09_avg_rank_175_fp8.safetensors" \
+    "${MODELS}/loras" \
+    "ltx-2-19b-distilled-lora_resized_dynamic_fro09_avg_rank_175_fp8.safetensors" &
+
+download \
+    "https://huggingface.co/Kijai/LTXV2_comfy/resolve/main/text_encoders/ltx-2-19b-embeddings_connector_dev_bf16.safetensors" \
+    "${MODELS}/clip" \
+    "ltx-2-19b-embeddings_connector_dev_bf16.safetensors" &
 
 # --- mel_band_roformer ---
 download \
