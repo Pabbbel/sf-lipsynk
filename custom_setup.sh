@@ -39,25 +39,40 @@ download() {
 
 # --- diffusion_models ---
 download \
+    "https://huggingface.co/Kijai/LongCat-Video_comfy/resolve/main/Avatar/LongCat-Avatar_comfy_bf16.safetensors" \
+    "${MODELS}/diffusion_models" \
+    "LongCat-Avatar_comfy_bf16.safetensors" &
+
+download \
     "https://huggingface.co/Kijai/WanVideo_comfy_fp8_scaled/resolve/main/S2V/Wan2_2-S2V-14B_fp8_e4m3fn_scaled_KJ.safetensors" \
     "${MODELS}/checkpoints" \
     "Wan2_2-S2V-14B_fp8_e4m3fn_scaled_KJ.safetensors" &
 
 download \
-"https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/diffusion_models/wan2.1_i2v_480p_14B_fp16.safetensors" \
-"${MODELS}/diffusion_models" \
-"wan2.1_i2v_480p_14B_fp16.safetensors" &
+    "https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/diffusion_models/wan2.1_i2v_480p_14B_fp16.safetensors" \
+    "${MODELS}/diffusion_models" \
+    "wan2.1_i2v_480p_14B_fp16.safetensors" &
 
 download \
-"https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/InfiniteTalk/Wan2_1-InfiniTetalk-Single_fp16.safetensors" \
-"${MODELS}/diffusion_models" \
-"Wan2_1-InfiniTetalk-Single_fp16.safetensors" &
+    "https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/InfiniteTalk/Wan2_1-InfiniTetalk-Single_fp16.safetensors" \
+    "${MODELS}/diffusion_models" \
+    "Wan2_1-InfiniTetalk-Single_fp16.safetensors" &
+
+download \
+    "https://huggingface.co/Kijai/MelBandRoFormer_comfy/resolve/main/MelBandRoformer_fp16.safetensors" \
+    "${MODELS}/diffusion_models" \
+    "MelBandRoformer_fp16.safetensors" &
 
 # --- loras ---
 download \
     "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/loras/wan2.2_animate_14B_relight_lora_bf16.safetensors" \
     "${MODELS}/loras" \
     "wan2.2_animate_14B_relight_lora_bf16.safetensors" &
+
+download \
+    "https://huggingface.co/Kijai/LongCat-Video_comfy/resolve/main/LongCat_distill_lora_alpha64_bf16.safetensors" \
+    "${MODELS}/loras" \
+    "LongCat_distill_lora_alpha64_bf16.safetensors" &
 
 download \
     "https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Wan21_T2V_14B_lightx2v_cfg_step_distill_lora_rank32.safetensors" \
