@@ -8,6 +8,12 @@ if [ ! -d "/workspace/ComfyUI" ]; then
 fi
 
 # ============================================================
+# Защита PyTorch: запоминаем версию ДО любых операций
+# ============================================================
+TORCH_EXPECTED=$(/workspace/ComfyUI/venv/bin/python3 -c "import torch; print(torch.__version__)" 2>/dev/null || echo "unknown")
+echo "PyTorch при старте: ${TORCH_EXPECTED}"
+
+# ============================================================
 # Скачивание моделей — aria2, 16 потоков на файл, все параллельно
 # ============================================================
 echo "Скачивание моделей (aria2, параллельно)..."
@@ -18,6 +24,9 @@ mkdir -p "${MODELS}/text_encoders"
 mkdir -p "${MODELS}/vae"
 mkdir -p "${MODELS}/loras"
 mkdir -p "${MODELS}/latent_upscale_models"
+mkdir -p "${MODELS}/audio_encoders"
+mkdir -p "${MODELS}/clip_vision"
+mkdir -p "${MODELS}/detection"
 
 download() {
     local url="$1"
@@ -44,7 +53,7 @@ download \
     "LongCat-Avatar_comfy_bf16.safetensors" &
 
 download \
-    "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/blob/main/split_files/diffusion_models/wan2.2_s2v_14B_bf16.safetensors" \
+    "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/diffusion_models/wan2.2_s2v_14B_bf16.safetensors" \
     "${MODELS}/diffusion_models" \
     "wan2.2_s2v_14B_bf16.safetensors" &
 
@@ -125,7 +134,8 @@ download \
     "${MODELS}/text_encoders" \
     "umt5_xxl_fp16.safetensors" &
 
-    download \
+# --- audio_encoders ---
+download \
     "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/audio_encoders/wav2vec2_large_english_fp16.safetensors" \
     "${MODELS}/audio_encoders" \
     "wav2vec2_large_english_fp16.safetensors" &
@@ -141,24 +151,24 @@ download \
     "https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/clip_vision/clip_vision_h.safetensors" \
     "${MODELS}/clip_vision" \
     "clip_vision_h.safetensors" &
-    
+
 # --- detection ---
 download \
-"https://huggingface.co/Wan-AI/Wan2.2-Animate-14B/resolve/main/process_checkpoint/det/yolov10m.onnx" \
-"${MODELS}/detection" \
-"yolov10m.onnx" &
+    "https://huggingface.co/Wan-AI/Wan2.2-Animate-14B/resolve/main/process_checkpoint/det/yolov10m.onnx" \
+    "${MODELS}/detection" \
+    "yolov10m.onnx" &
 
 download \
-"https://huggingface.co/Kijai/vitpose_comfy/resolve/main/onnx/vitpose_h_wholebody_model.onnx" \
-"${MODELS}/detection" \
-"vitpose_h_wholebody_model.onnx" &
+    "https://huggingface.co/Kijai/vitpose_comfy/resolve/main/onnx/vitpose_h_wholebody_model.onnx" \
+    "${MODELS}/detection" \
+    "vitpose_h_wholebody_model.onnx" &
 
 download \
-"https://huggingface.co/Kijai/vitpose_comfy/resolve/main/onnx/vitpose_h_wholebody_data.bin" \
-"${MODELS}/detection" \
-"vitpose_h_wholebody_data.bin" &
+    "https://huggingface.co/Kijai/vitpose_comfy/resolve/main/onnx/vitpose_h_wholebody_data.bin" \
+    "${MODELS}/detection" \
+    "vitpose_h_wholebody_data.bin" &
 
-# --- RIFE models (в папку кастомной ноды) ---
+# --- RIFE models ---
 RIFE_DIR="/workspace/ComfyUI/custom_nodes/ComfyUI-Frame-Interpolation/ckpts/rife"
 mkdir -p "${RIFE_DIR}"
 
@@ -174,5 +184,14 @@ download \
 
 echo "Ожидание завершения всех загрузок..."
 wait
+
+# ============================================================
+# Проверка PyTorch после всех операций
+# ============================================================
+TORCH_CURRENT=$(/workspace/ComfyUI/venv/bin/python3 -c "import torch; print(torch.__version__)" 2>/dev/null || echo "unknown")
+if [ "$TORCH_EXPECTED" != "$TORCH_CURRENT" ]; then
+    echo "!!! ПРЕДУПРЕЖДЕНИЕ: PyTorch изменился с ${TORCH_EXPECTED} на ${TORCH_CURRENT}!"
+    echo "!!! Это может вызвать проблемы совместимости."
+fi
 
 echo "=== 🚀Запускай комфи, все готово🚀 ==="
