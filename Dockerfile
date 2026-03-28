@@ -1,21 +1,28 @@
 # ============================================================
-# Пин на конкретную версию базового образа (cu128)
+# Базовый образ — latest (ComfyUI 0.15.1+, PyTorch 2.10.0+cu128)
 # ============================================================
-FROM ashleykza/comfyui:cu128-py312-v0.3.48
+FROM ashleykza/comfyui:latest
 
 RUN apt-get update && apt-get install -y --no-install-recommends aria2 && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # ============================================================
-# Кастомные ноды — ВСЕ запинены на конкретные коммиты
+# Запоминаем версию PyTorch из базового образа
+# ============================================================
+RUN . /ComfyUI/venv/bin/activate && \
+    python3 -c "import torch; print(torch.__version__)" > /tmp/torch_version_base && \
+    echo "=== Base PyTorch: $(cat /tmp/torch_version_base) ===" && \
+    deactivate
+
+# ============================================================
+# Кастомные ноды — WanVideoWrapper запинен на v1.4.5
 # ============================================================
 RUN cd /ComfyUI/custom_nodes && \
-    # WanVideoWrapper v1.4.5
+    # WanVideoWrapper v1.4.5 (коммит f28e7da)
     git clone https://github.com/kijai/ComfyUI-WanVideoWrapper.git && \
     cd ComfyUI-WanVideoWrapper && git checkout f28e7da && cd .. && \
-    # pythongosssss Custom Scripts
-    git clone https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git && \
-    cd ComfyUI-Custom-Scripts && git checkout $(git rev-parse HEAD) && cd .. && \
+    # Custom Scripts (pythongosssss)
+    git clone --depth 1 https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git && \
     # LTXVideo
     git clone --depth 1 https://github.com/Lightricks/ComfyUI-LTXVideo.git && \
     # rgthree
@@ -32,15 +39,18 @@ RUN cd /ComfyUI/custom_nodes && \
     git clone --depth 1 https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git
 
 # ============================================================
-# Установка зависимостей нод БЕЗ перезаписи torch/torchvision
+# Зависимости нод — БЕЗ перезаписи torch
 # ============================================================
 RUN . /ComfyUI/venv/bin/activate && \
-    # Сначала запомним текущую версию torch
-    TORCH_VER=$(python3 -c "import torch; print(torch.__version__)") && \
-    echo "=== Текущий PyTorch: ${TORCH_VER} ===" && \
-    # Ставим зависимости нод (--no-deps для WanVideoWrapper чтобы не тянул новый torch)
-    pip install -r /ComfyUI/custom_nodes/ComfyUI-WanVideoWrapper/requirements.txt --no-deps --quiet && \
-    # Остальные ноды — обычно безопасны
+    TORCH_BASE=$(cat /tmp/torch_version_base) && \
+    echo "=== Защищаем PyTorch ${TORCH_BASE} ===" && \
+    \
+    # WanVideoWrapper — зависимости поштучно, БЕЗ torch
+    pip install ftfy accelerate einops "diffusers>=0.33.0" "peft>=0.17.0" \
+                "sentencepiece>=0.2.0" protobuf pyloudnorm "gguf>=0.17.1" \
+                opencv-python scipy --quiet && \
+    \
+    # Остальные ноды — через requirements.txt
     for dir in /ComfyUI/custom_nodes/*/; do \
         nodename=$(basename "$dir"); \
         if [ "$nodename" = "ComfyUI-WanVideoWrapper" ]; then continue; fi; \
@@ -49,15 +59,19 @@ RUN . /ComfyUI/venv/bin/activate && \
             pip install -r "${dir}requirements.txt" --quiet; \
         fi; \
     done && \
-    # Доставим недостающие пакеты WanVideoWrapper поштучно (без torch)
-    pip install ftfy accelerate einops diffusers peft sentencepiece \
-                protobuf pyloudnorm "gguf>=0.17.1" opencv-python scipy --quiet && \
-    # Проверяем что torch не сломался
-    TORCH_VER_AFTER=$(python3 -c "import torch; print(torch.__version__)") && \
-    echo "=== PyTorch после установки: ${TORCH_VER_AFTER} ===" && \
-    if [ "$TORCH_VER" != "$TORCH_VER_AFTER" ]; then \
-        echo "!!! ВНИМАНИЕ: PyTorch был перезаписан! Откатываем..." && \
-        pip install torch==${TORCH_VER} --index-url https://download.pytorch.org/whl/cu128 --force-reinstall; \
+    \
+    # Проверяем и восстанавливаем torch если перезаписан
+    TORCH_NOW=$(python3 -c "import torch; print(torch.__version__)") && \
+    echo "=== PyTorch после установки нод: ${TORCH_NOW} ===" && \
+    if [ "$TORCH_BASE" != "$TORCH_NOW" ]; then \
+        echo "!!! PyTorch перезаписан! Откатываем на ${TORCH_BASE}..." && \
+        CUDA_TAG=$(echo "$TORCH_BASE" | grep -oP '\+cu\K[0-9]+') && \
+        pip install "torch==${TORCH_BASE}" "torchvision" "torchaudio" \
+            --index-url "https://download.pytorch.org/whl/cu${CUDA_TAG}" \
+            --force-reinstall --quiet && \
+        echo "=== PyTorch восстановлен: $(python3 -c 'import torch; print(torch.__version__)') ==="; \
+    else \
+        echo "=== PyTorch не тронут, всё ок ==="; \
     fi && \
     deactivate
 
