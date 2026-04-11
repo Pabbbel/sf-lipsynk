@@ -84,6 +84,11 @@ download \
     "wan2.2_animate_14B_relight_lora_bf16.safetensors" &
 
 download \
+    "https://huggingface.co/elix3r/LTX-2.3-22b-AV-LoRA-talking-head/resolve/main/LTX-2.3-22b-AV-LoRA-talking-head-v1.safetensors" \
+    "${MODELS}/loras" \
+    "LTX-2.3-22b-AV-LoRA-talking-head-v1.safetensors" &
+
+download \
     "https://huggingface.co/Kijai/LongCat-Video_comfy/resolve/main/LongCat_distill_lora_alpha64_bf16.safetensors" \
     "${MODELS}/loras" \
     "LongCat_distill_lora_alpha64_bf16.safetensors" &
